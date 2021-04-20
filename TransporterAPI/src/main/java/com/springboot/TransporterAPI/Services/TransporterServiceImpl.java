@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springboot.TransporterAPI.Dao.TransporterDao;
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.model.TransporterResponse;
+import com.springboot.TransporterAPI.Model.TransporterResponse;
 
 @Service
 public class TransporterServiceImpl implements TransporterService {
 
 	@Autowired
 	private TransporterDao transporterdao;
+	
 	
 	@Override
 	public TransporterResponse addTransporter(Transporter transporter) {
@@ -33,8 +34,17 @@ public class TransporterServiceImpl implements TransporterService {
 			return transporterResponse;
 		}
 		
+		List<Transporter> allTransporters = transporterdao.findAll();
+		for(Transporter t: allTransporters) {
+			if(t.getPhoneNo()==transporter.getPhoneNo()) {
+				transporterResponse.setStatus("Error");
+				transporterResponse.setMessage("Account already exist");
+				return transporterResponse;
+			}
+		}
+		
 		transporter.setApproved(false);
-		transporter.setKyc("s3 link");
+		//transporter.setKyc("s3 link");
 		transporterdao.save(transporter);
 		transporterResponse.setStatus("Pending");
 		transporterResponse.setMessage("Please wait for liveasy will approved your request");
@@ -45,9 +55,9 @@ public class TransporterServiceImpl implements TransporterService {
 	public List<Transporter> getApproved(boolean approved) {
 		// TODO Auto-generated method stub
 		List<Transporter> setList = new ArrayList<Transporter>();
-		List<Transporter> allTransporter = transporterdao.findAll();
+		List<Transporter> allTransporters = transporterdao.findAll();
 		if(approved) {
-			for(Transporter t: allTransporter) {
+			for(Transporter t: allTransporters) {
 				if (t.isApproved()){
 					setList.add(t);
 				}
@@ -55,7 +65,7 @@ public class TransporterServiceImpl implements TransporterService {
 		}
 		
 		else if(!approved) {
-			for(Transporter t: allTransporter) {
+			for(Transporter t: allTransporters) {
 				if (!t.isApproved()){
 					setList.add(t);
 				}
@@ -66,7 +76,7 @@ public class TransporterServiceImpl implements TransporterService {
 	}
 
 	@Override
-	public TransporterResponse updateTransporter(UUID id) {
+	public TransporterResponse updateTransporter(UUID id, Transporter transporter2) {
 		// TODO Auto-generated method stub
 		TransporterResponse transporterResponse = new TransporterResponse();
 		Transporter transporter = new Transporter();
@@ -77,14 +87,28 @@ public class TransporterServiceImpl implements TransporterService {
 			
 		}
 		
-		System.out.print("Exception working fine");
 		if(transporter.getId()==null) {
 			transporterResponse.setStatus("Not Found");
 			transporterResponse.setMessage("Account does not exist");
 			return transporterResponse;
 		}
 		
-		transporter.setApproved(true);
+		if(transporter2.getPhoneNo()!=0) {
+			transporterResponse.setStatus("Error");
+			transporterResponse.setMessage("Phone number cannot be changed");
+			return transporterResponse;
+		}
+		
+		if(transporter2.getName()!=null) {
+			transporter.setName(transporter2.getName());
+		}
+		
+		if(transporter2.getKyc()!=null) {
+			transporter.setKyc(transporter2.getKyc());
+		}
+		
+		
+		transporter.setApproved(transporter2.isApproved());
 		transporterdao.save(transporter);
 		transporterResponse.setStatus("Success");
 		transporterResponse.setMessage("Account updated successfully");
@@ -114,6 +138,12 @@ public class TransporterServiceImpl implements TransporterService {
 		transporterResponse.setStatus("Success");
 		transporterResponse.setMessage("Account deleted successfully");
 		return transporterResponse;
+	}
+
+	@Override
+	public List<Transporter> allTransporter() {
+		// TODO Auto-generated method stub
+		return transporterdao.findAll();
 	}
 	
 }

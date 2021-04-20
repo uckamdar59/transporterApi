@@ -1,4 +1,4 @@
-package com.springboot.TransporterAPI.model;
+package com.springboot.TransporterAPI.Model;
 
 import lombok.Data;
 

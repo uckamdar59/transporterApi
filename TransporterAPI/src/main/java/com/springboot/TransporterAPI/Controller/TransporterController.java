@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.springboot.TransporterAPI.Entity.Transporter;
+import com.springboot.TransporterAPI.Model.TransporterResponse;
 import com.springboot.TransporterAPI.Services.TransporterService;
-import com.springboot.TransporterAPI.model.TransporterResponse;
 
 @RestController
-public class Controller extends ResponseEntityExceptionHandler {
-	//Edited some changes
+public class TransporterController {
+	
 	@Autowired
 	private TransporterService service;
 	
@@ -27,19 +26,24 @@ public class Controller extends ResponseEntityExceptionHandler {
 		return service.addTransporter(transporter);
 	}
 	
+	@GetMapping("/transporters")
+	public List<Transporter> allTransporter(){
+		return service.allTransporter();
+	}
+	
 	@GetMapping("/transporter")
 	public List<Transporter> getApproved(@RequestParam boolean approved){
 		return service.getApproved(approved);
 	}
 	
-	@PutMapping("/transporter/{transporter_id}")
-	public TransporterResponse updateTransporter(@PathVariable UUID transporter_id){
-		return service.updateTransporter(transporter_id);
+	@PutMapping("/transporter/{id}")
+	public TransporterResponse updateTransporter(@PathVariable UUID id, @RequestBody Transporter transporter){
+		return service.updateTransporter(id, transporter);
 	}
 	
-	@DeleteMapping("/transporter/{transporter_id}")
-	public TransporterResponse deleteTransporter(@PathVariable UUID transporter_id){
-		return service.deleteTransporter(transporter_id);
+	@DeleteMapping("/transporter/{id}")
+	public TransporterResponse deleteTransporter(@PathVariable UUID id){
+		return service.deleteTransporter(id);
 	}
 
 }
