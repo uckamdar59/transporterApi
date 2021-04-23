@@ -17,6 +17,7 @@ public class Transporter {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
+	
 	private String name;
 	private long phoneNo;
 	private String kyc;

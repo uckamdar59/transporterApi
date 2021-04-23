@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.Model.TransporterResponse;
+import com.springboot.TransporterAPI.Model.TransporterCreateRequest;
+import com.springboot.TransporterAPI.Model.TransporterDeleteRequest;
+import com.springboot.TransporterAPI.Model.TransporterUpdateRequest;
 import com.springboot.TransporterAPI.Services.TransporterService;
 
 @RestController
@@ -22,27 +24,30 @@ public class TransporterController {
 	private TransporterService service;
 	
 	@PostMapping("/transporter")
-	public TransporterResponse addTransporter(@RequestBody Transporter transporter) {
+	public TransporterCreateRequest addTransporter(@RequestBody Transporter transporter) {
 		return service.addTransporter(transporter);
 	}
 	
-	@GetMapping("/transporters")
-	public List<Transporter> allTransporter(){
-		return service.allTransporter();
-	}
 	
 	@GetMapping("/transporter")
-	public List<Transporter> getApproved(@RequestParam boolean approved){
-		return service.getApproved(approved);
+	public List<Transporter> getApproved(@RequestParam(required = false) Boolean approved){
+		if(approved==null) {
+			return service.allTransporter();
+		}
+		else {
+			return service.getApproved(approved);
+		}
 	}
 	
+	
 	@PutMapping("/transporter/{id}")
-	public TransporterResponse updateTransporter(@PathVariable UUID id, @RequestBody Transporter transporter){
+	public TransporterUpdateRequest updateTransporter(@PathVariable UUID id, @RequestBody Transporter transporter){
 		return service.updateTransporter(id, transporter);
 	}
 	
+	
 	@DeleteMapping("/transporter/{id}")
-	public TransporterResponse deleteTransporter(@PathVariable UUID id){
+	public TransporterDeleteRequest deleteTransporter(@PathVariable UUID id){
 		return service.deleteTransporter(id);
 	}
 
