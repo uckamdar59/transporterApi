@@ -39,15 +39,21 @@ public class TransporterController {
 		}
 	}
 	
+	@GetMapping("/transporter/{id}")
+	private Transporter getOneTransporter(@PathVariable String id) {
+		// TODO Auto-generated method stub
+		return service.getOneTransporter(id);
+	}
+	
 	
 	@PutMapping("/transporter/{id}")
-	public TransporterUpdateRequest updateTransporter(@PathVariable UUID id, @RequestBody Transporter transporter){
+	public TransporterUpdateRequest updateTransporter(@PathVariable String id, @RequestBody Transporter transporter){
 		return service.updateTransporter(id, transporter);
 	}
 	
 	
 	@DeleteMapping("/transporter/{id}")
-	public TransporterDeleteRequest deleteTransporter(@PathVariable UUID id){
+	public TransporterDeleteRequest deleteTransporter(@PathVariable String id){
 		return service.deleteTransporter(id);
 	}
 

@@ -13,10 +13,12 @@ public interface TransporterService {
 	
 	List<Transporter> getApproved(Boolean approved);
 
-	TransporterUpdateRequest updateTransporter(UUID id, Transporter transporter);
+	TransporterUpdateRequest updateTransporter(String id, Transporter transporter);
 
-	TransporterDeleteRequest deleteTransporter(UUID id);
+	TransporterDeleteRequest deleteTransporter(String id);
 
 	List<Transporter> allTransporter();
+
+	Transporter getOneTransporter(String id);
 
 }

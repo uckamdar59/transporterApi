@@ -40,6 +40,12 @@ public class TransporterServiceImpl implements TransporterService {
 			return createRequest;
 		}
 		
+		if(String.valueOf(transporter.getPhoneNo()).length() != 10) {
+			createRequest.setStatus(constants.getError());
+			createRequest.setMessage("Enter 10 digits phone number");
+			return createRequest;
+		}
+		
 		String a = null;
 		a = transporterdao.findByPhoneNo(transporter.getPhoneNo());
 		if (a != null) {
@@ -47,7 +53,8 @@ public class TransporterServiceImpl implements TransporterService {
 			createRequest.setMessage(constants.getAccountExist());
 			return createRequest;
 		}
-
+		
+		transporter.setId("transporter:"+UUID.randomUUID());
 		transporterdao.save(transporter);
 		createRequest.setStatus(constants.getPending());
 		createRequest.setMessage(constants.getApproveRequest());
@@ -58,18 +65,22 @@ public class TransporterServiceImpl implements TransporterService {
 	@Override
 	public List<Transporter> allTransporter() {
 		// TODO Auto-generated method stub
-		return transporterdao.findAll();
+		List<Transporter> a =  transporterdao.findAll();
+		System.out.println("Data is: " +a);
+		return a;
 	}
 	
 	
 	@Override
 	public List<Transporter> getApproved(Boolean approved) {
 		// TODO Auto-generated method stub
-		return transporterdao.findByApproved(approved);
+		List<Transporter> b =  transporterdao.findByApproved(approved);
+		System.out.println(b);
+		return b;
 	}
 
 	@Override
-	public TransporterUpdateRequest updateTransporter(UUID id, Transporter updateTransporter) {
+	public TransporterUpdateRequest updateTransporter(String id, Transporter updateTransporter) {
 		// TODO Auto-generated method stub
 		TransporterUpdateRequest updateRequest = new TransporterUpdateRequest();
 		Transporter transporter = new Transporter();
@@ -105,7 +116,7 @@ public class TransporterServiceImpl implements TransporterService {
 	}
 
 	@Override
-	public TransporterDeleteRequest deleteTransporter(UUID id) {
+	public TransporterDeleteRequest deleteTransporter(String id) {
 		// TODO Auto-generated method stub
 		TransporterDeleteRequest deleteRequest = new TransporterDeleteRequest();
 		Transporter transporter = new Transporter();
@@ -124,15 +135,12 @@ public class TransporterServiceImpl implements TransporterService {
 			return deleteRequest;
 		}
 		 
-		
-		/*
-		 * if(transporter.getId()==null) {
-		 * deleteRequest.setStatus(constants.getNotFound());
-		 * deleteRequest.setMessage(constants.getAccountNotExist()); return
-		 * deleteRequest; }
-		 */
+	}
 
-		
+	@Override
+	public Transporter getOneTransporter(String id) {
+		// TODO Auto-generated method stub
+		return transporterdao.getById(id);
 	}
 
 }

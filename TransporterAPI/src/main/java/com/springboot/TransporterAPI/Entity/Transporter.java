@@ -14,9 +14,7 @@ import lombok.Data;
 @Entity
 public class Transporter {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID id;
-	
+	private String id;
 	
 	private String name;
 	private long phoneNo;
