@@ -42,7 +42,7 @@ public class TransporterServiceImpl implements TransporterService {
 		
 		if(String.valueOf(transporter.getPhoneNo()).length() != 10) {
 			createRequest.setStatus(constants.getError());
-			createRequest.setMessage("Enter 10 digits phone number");
+			createRequest.setMessage(constants.getIncorrecPhoneNoError());
 			return createRequest;
 		}
 		
@@ -64,19 +64,17 @@ public class TransporterServiceImpl implements TransporterService {
 	
 	@Override
 	public List<Transporter> allTransporter() {
-		// TODO Auto-generated method stub
-		List<Transporter> a =  transporterdao.findAll();
-		System.out.println("Data is: " +a);
-		return a;
+		//List<Transporter> a =  transporterdao.findAll();
+		//System.out.println("Data is: " +a);
+		return transporterdao.findAll();
 	}
 	
 	
 	@Override
 	public List<Transporter> getApproved(Boolean approved) {
-		// TODO Auto-generated method stub
-		List<Transporter> b =  transporterdao.findByApproved(approved);
-		System.out.println(b);
-		return b;
+		//List<Transporter> b =  transporterdao.findByApproved(approved);
+		//System.out.println(b);
+		return transporterdao.findByApproved(approved);
 	}
 
 	@Override

@@ -16,4 +16,5 @@ public class CommonConstants {
 	public final String pending = "Pending";
 	public final String approveRequest = "Please wait for liveasy will approve your request";
 	public final String phoneNoUpdateError = "Phone number cannot be changed";
+	public final String IncorrecPhoneNoError = "Enter 10 digits phone number";
 }
