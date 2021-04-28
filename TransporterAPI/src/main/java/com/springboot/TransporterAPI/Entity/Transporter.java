@@ -1,10 +1,6 @@
 package com.springboot.TransporterAPI.Entity;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
@@ -19,5 +15,6 @@ public class Transporter {
 	private String name;
 	private long phoneNo;
 	private String kyc;
+	private String companyName;
 	private boolean approved;
 }

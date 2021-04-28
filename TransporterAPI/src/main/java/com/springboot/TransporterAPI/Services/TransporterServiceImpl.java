@@ -61,7 +61,6 @@ public class TransporterServiceImpl implements TransporterService {
 		return createRequest;
 	}
 
-	
 	@Override
 	public List<Transporter> allTransporter() {
 		//List<Transporter> a =  transporterdao.findAll();
@@ -69,6 +68,11 @@ public class TransporterServiceImpl implements TransporterService {
 		return transporterdao.findAll();
 	}
 	
+	@Override
+	public Transporter getOneTransporter(String id) {
+		// TODO Auto-generated method stub
+		return transporterdao.getById(id);
+	}
 	
 	@Override
 	public List<Transporter> getApproved(Boolean approved) {
@@ -105,6 +109,10 @@ public class TransporterServiceImpl implements TransporterService {
 		if (updateTransporter.getKyc() != null) {
 			transporter.setKyc(updateTransporter.getKyc());
 		}
+		
+		if (updateTransporter.getCompanyName() != null) {
+			transporter.setCompanyName(updateTransporter.getCompanyName());
+		}
 
 		transporter.setApproved(updateTransporter.isApproved());
 		transporterdao.save(transporter);
@@ -133,12 +141,6 @@ public class TransporterServiceImpl implements TransporterService {
 			return deleteRequest;
 		}
 		 
-	}
-
-	@Override
-	public Transporter getOneTransporter(String id) {
-		// TODO Auto-generated method stub
-		return transporterdao.getById(id);
 	}
 
 }
