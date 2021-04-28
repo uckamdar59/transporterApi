@@ -132,7 +132,7 @@ class TransporterApiApplicationTests {
 	
 	//Unit Testing for getting all transporters
 	@Test 
-	public void getTransporterTest() { 
+	public void getAllTransportersTest() { 
 		when(transporterDao.findAll()).thenReturn(Stream.of(transporter1, transporter2, transporter3).collect(Collectors.toList())); 
 		assertEquals(3, service.allTransporter().size());
 	}
@@ -146,11 +146,12 @@ class TransporterApiApplicationTests {
 	
 	//Unit Testing for getting single transporter
 	@Test
-	public void getOne() {
+	public void getOneTransporterTest() {
 		when(transporterDao.getById("transporter:01")).thenReturn(transporter1);
 		assertEquals(transporter1, service.getOneTransporter("transporter:01"));
 	}
 	
+	//Unit Testing for updating with correct id
 	@Test
 	public void updateWithCorrectIdTest() {
 		transporter1.setName("John");
@@ -163,6 +164,7 @@ class TransporterApiApplicationTests {
 		assertEquals(tur, service.updateTransporter("transporter:01", transporter1));
 	}
 	
+	//Unit Testing for updating with incorrect id
 	@Test
 	public void updateWithIncorrectIdTest() {
 		transporter1.setName("John");
@@ -175,6 +177,7 @@ class TransporterApiApplicationTests {
 		assertEquals(tur, service.updateTransporter("transporter:10", transporter1));
 	}
 	
+	//Unit Testing for updating with phone number
 	@Test
 	public void updateWithPhoneNoTest() {
 		transporter1.setName("John");
