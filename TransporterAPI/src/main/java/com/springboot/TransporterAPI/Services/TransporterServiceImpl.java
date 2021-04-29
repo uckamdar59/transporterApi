@@ -13,93 +13,94 @@ import org.springframework.stereotype.Service;
 import com.springboot.TransporterAPI.Constants.CommonConstants;
 import com.springboot.TransporterAPI.Dao.TransporterDao;
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.Model.TransporterCreateRequest;
-import com.springboot.TransporterAPI.Model.TransporterDeleteRequest;
-import com.springboot.TransporterAPI.Model.TransporterUpdateRequest;
+import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
+import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
+import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
 
 @Service
 public class TransporterServiceImpl implements TransporterService {
 
 	@Autowired
 	private TransporterDao transporterdao;
-	private CommonConstants constants = new CommonConstants() ;
 
 	@Override
-	public TransporterCreateRequest addTransporter(Transporter transporter) {
-		// TODO Auto-generated method stub
-		TransporterCreateRequest createRequest = new TransporterCreateRequest();
+	public TransporterCreateResponse addTransporter(Transporter transporter) {
+		TransporterCreateResponse createResponse = new TransporterCreateResponse();
 		if (transporter.getName() == null) {
-			createRequest.setStatus(constants.getError());
-			createRequest.setMessage(constants.getNameError());
-			return createRequest;
+			createResponse.setStatus(CommonConstants.error);
+			createResponse.setMessage(CommonConstants.nameError);
+			return createResponse;
 		}
 		
 		if (transporter.getPhoneNo() == 0) {
-			createRequest.setStatus(constants.getError());
-			createRequest.setMessage(constants.getPhoneNoError());
-			return createRequest;
+			createResponse.setStatus(CommonConstants.error);
+			createResponse.setMessage(CommonConstants.phoneNoError);
+			return createResponse;
 		}
 		
-		if(String.valueOf(transporter.getPhoneNo()).length() != 10) {
-			createRequest.setStatus(constants.getError());
-			createRequest.setMessage(constants.getIncorrecPhoneNoError());
-			return createRequest;
+		String validate = "[0-9]{10}$";
+		Pattern pattern = Pattern.compile(validate);
+		Matcher m = pattern.matcher(Long.toString(transporter.getPhoneNo()));
+		if(!m.matches()) {
+			createResponse.setStatus(CommonConstants.error);
+			createResponse.setMessage(CommonConstants.IncorrecPhoneNoError);
+			return createResponse;
 		}
 		
 		String a = null;
 		a = transporterdao.findByPhoneNo(transporter.getPhoneNo());
 		if (a != null) {
-			createRequest.setStatus(constants.getError());
-			createRequest.setMessage(constants.getAccountExist());
-			return createRequest;
+			createResponse.setStatus(CommonConstants.error);
+			createResponse.setMessage(CommonConstants.accountExist);
+			return createResponse;
 		}
 		
 		transporter.setId("transporter:"+UUID.randomUUID());
 		transporterdao.save(transporter);
-		createRequest.setStatus(constants.getPending());
-		createRequest.setMessage(constants.getApproveRequest());
-		return createRequest;
+		createResponse.setStatus(CommonConstants.pending);
+		createResponse.setMessage(CommonConstants.approveRequest);
+		return createResponse;
 	}
 
 	@Override
 	public List<Transporter> allTransporter() {
-		//List<Transporter> a =  transporterdao.findAll();
-		//System.out.println("Data is: " +a);
 		return transporterdao.findAll();
+		
 	}
 	
 	@Override
 	public Transporter getOneTransporter(String id) {
-		// TODO Auto-generated method stub
-		return transporterdao.getById(id);
+		try {
+			return transporterdao.findById(id).get();
+		}
+		catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 	
 	@Override
 	public List<Transporter> getApproved(Boolean approved) {
-		//List<Transporter> b =  transporterdao.findByApproved(approved);
-		//System.out.println(b);
 		return transporterdao.findByApproved(approved);
 	}
 
 	@Override
-	public TransporterUpdateRequest updateTransporter(String id, Transporter updateTransporter) {
-		// TODO Auto-generated method stub
-		TransporterUpdateRequest updateRequest = new TransporterUpdateRequest();
+	public TransporterUpdateResponse updateTransporter(String id, Transporter updateTransporter) {
+		TransporterUpdateResponse updateResponse = new TransporterUpdateResponse();
 		Transporter transporter = new Transporter();
 		Optional<Transporter> T = transporterdao.findById(id);
 		if(T.isPresent()) {
 			transporter = T.get();
 		}
 		else {
-			updateRequest.setStatus(constants.getNotFound());
-			updateRequest.setMessage(constants.getAccountNotExist());
-			return updateRequest;
+			updateResponse.setStatus(CommonConstants.notFound);
+			updateResponse.setMessage(CommonConstants.accountNotExist);
+			return updateResponse;
 		}
 
 		if (updateTransporter.getPhoneNo() != 0) {			
-			updateRequest.setStatus(constants.getError());
-			updateRequest.setMessage(constants.getPhoneNoUpdateError());
-			return updateRequest;
+			updateResponse.setStatus(CommonConstants.error);
+			updateResponse.setMessage(CommonConstants.phoneNoUpdateError);
+			return updateResponse;
 		}
 
 		if (updateTransporter.getName() != null) {
@@ -116,29 +117,28 @@ public class TransporterServiceImpl implements TransporterService {
 
 		transporter.setApproved(updateTransporter.isApproved());
 		transporterdao.save(transporter);
-		updateRequest.setStatus(constants.getSuccess());
-		updateRequest.setMessage(constants.getUpdateSuccess());
-		return updateRequest;
+		updateResponse.setStatus(CommonConstants.success);
+		updateResponse.setMessage(CommonConstants.updateSuccess);
+		return updateResponse;
 	}
 
 	@Override
-	public TransporterDeleteRequest deleteTransporter(String id) {
-		// TODO Auto-generated method stub
-		TransporterDeleteRequest deleteRequest = new TransporterDeleteRequest();
+	public TransporterDeleteResponse deleteTransporter(String id) {
+		TransporterDeleteResponse deleteResponse = new TransporterDeleteResponse();
 		Transporter transporter = new Transporter();
 		Optional<Transporter> T = transporterdao.findById(id);
 		 
 		if( T.isPresent()) {
 			transporter = T.get();
 			transporterdao.delete(transporter);
-			deleteRequest.setStatus(constants.getSuccess());
-			deleteRequest.setMessage(constants.getDeleteSuccess());
-			return deleteRequest;
+			deleteResponse.setStatus(CommonConstants.success);
+			deleteResponse.setMessage(CommonConstants.deleteSuccess);
+			return deleteResponse;
 		}
 		else {
-			deleteRequest.setStatus(constants.getNotFound());
-			deleteRequest.setMessage(constants.getAccountNotExist());
-			return deleteRequest;
+			deleteResponse.setStatus(CommonConstants.notFound);
+			deleteResponse.setMessage(CommonConstants.accountNotExist);
+			return deleteResponse;
 		}
 		 
 	}

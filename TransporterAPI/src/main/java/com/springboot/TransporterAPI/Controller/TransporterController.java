@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.Model.TransporterCreateRequest;
-import com.springboot.TransporterAPI.Model.TransporterDeleteRequest;
-import com.springboot.TransporterAPI.Model.TransporterUpdateRequest;
+import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
+import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
+import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
 import com.springboot.TransporterAPI.Services.TransporterService;
 
 @RestController
@@ -24,7 +24,7 @@ public class TransporterController {
 	private TransporterService service;
 	
 	@PostMapping("/transporter")
-	public TransporterCreateRequest addTransporter(@RequestBody Transporter transporter) {
+	public TransporterCreateResponse addTransporter(@RequestBody Transporter transporter) {
 		return service.addTransporter(transporter);
 	}
 	
@@ -41,19 +41,18 @@ public class TransporterController {
 	
 	@GetMapping("/transporter/{id}")
 	private Transporter getOneTransporter(@PathVariable String id) {
-		// TODO Auto-generated method stub
 		return service.getOneTransporter(id);
 	}
 	
 	
 	@PutMapping("/transporter/{id}")
-	public TransporterUpdateRequest updateTransporter(@PathVariable String id, @RequestBody Transporter transporter){
+	public TransporterUpdateResponse updateTransporter(@PathVariable String id, @RequestBody Transporter transporter){
 		return service.updateTransporter(id, transporter);
 	}
 	
 	
 	@DeleteMapping("/transporter/{id}")
-	public TransporterDeleteRequest deleteTransporter(@PathVariable String id){
+	public TransporterDeleteResponse deleteTransporter(@PathVariable String id){
 		return service.deleteTransporter(id);
 	}
 
