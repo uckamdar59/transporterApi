@@ -56,6 +56,7 @@ public class TransporterServiceImpl implements TransporterService {
 		}
 		
 		transporter.setId("transporter:"+UUID.randomUUID());
+		
 		transporterdao.save(transporter);
 		createResponse.setStatus(CommonConstants.pending);
 		createResponse.setMessage(CommonConstants.approveRequest);
