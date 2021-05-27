@@ -6,13 +6,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.springboot.TransporterAPI.Constants.CommonConstants;
 import com.springboot.TransporterAPI.Dao.TransporterDao;
 import com.springboot.TransporterAPI.Entity.Transporter;
+import com.springboot.TransporterAPI.Model.LoadTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
 import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
 import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
@@ -24,15 +25,28 @@ public class TransporterServiceImpl implements TransporterService {
 	private TransporterDao transporterdao;
 
 	@Override
-	public TransporterCreateResponse addTransporter(Transporter transporter) {
+	public TransporterCreateResponse addTransporter(LoadTransporter loadTransporter) {
 		TransporterCreateResponse createResponse = new TransporterCreateResponse();
-		if (transporter.getName() == null) {
+		Transporter transporter = new Transporter();
+		if (loadTransporter.getName() == null) {
 			createResponse.setStatus(CommonConstants.error);
 			createResponse.setMessage(CommonConstants.nameError);
 			return createResponse;
 		}
 		
-		if (transporter.getPhoneNo() == 0) {
+		if (loadTransporter.getName().trim().length()<1) {
+			createResponse.setStatus(CommonConstants.error);
+			createResponse.setMessage(CommonConstants.emptyNameError);
+			return createResponse;
+		}
+		
+		if (loadTransporter.getCompanyName().trim().length()<1) {
+			createResponse.setStatus(CommonConstants.error);
+			createResponse.setMessage(CommonConstants.emptyCompanyNameError);
+			return createResponse;
+		}
+		
+		if (loadTransporter.getPhoneNo() == null) {
 			createResponse.setStatus(CommonConstants.error);
 			createResponse.setMessage(CommonConstants.phoneNoError);
 			return createResponse;
@@ -40,7 +54,7 @@ public class TransporterServiceImpl implements TransporterService {
 		
 		String validate = "[0-9]{10}$";
 		Pattern pattern = Pattern.compile(validate);
-		Matcher m = pattern.matcher(Long.toString(transporter.getPhoneNo()));
+		Matcher m = pattern.matcher(Long.toString(loadTransporter.getPhoneNo()));
 		if(!m.matches()) {
 			createResponse.setStatus(CommonConstants.error);
 			createResponse.setMessage(CommonConstants.IncorrecPhoneNoError);
@@ -48,7 +62,7 @@ public class TransporterServiceImpl implements TransporterService {
 		}
 		
 		String a = null;
-		a = transporterdao.findByPhoneNo(transporter.getPhoneNo());
+		a = transporterdao.findByPhoneNo(loadTransporter.getPhoneNo());
 		if (a != null) {
 			createResponse.setStatus(CommonConstants.error);
 			createResponse.setMessage(CommonConstants.accountExist);
@@ -56,16 +70,15 @@ public class TransporterServiceImpl implements TransporterService {
 		}
 		
 		transporter.setId("transporter:"+UUID.randomUUID());
-		
+		transporter.setName(loadTransporter.getName().trim());
+		transporter.setCompanyName(loadTransporter.getCompanyName().trim());
+		transporter.setPhoneNo(loadTransporter.getPhoneNo());
+		transporter.setKyc(loadTransporter.getKyc());
+		transporter.setApproved(loadTransporter.isApproved());
 		transporterdao.save(transporter);
 		createResponse.setStatus(CommonConstants.pending);
 		createResponse.setMessage(CommonConstants.approveRequest);
 		return createResponse;
-	}
-
-	@Override
-	public List<Transporter> allTransporter() {
-		return transporterdao.findAll();
 		
 	}
 	
@@ -80,12 +93,21 @@ public class TransporterServiceImpl implements TransporterService {
 	}
 	
 	@Override
-	public List<Transporter> getApproved(Boolean approved) {
-		return transporterdao.findByApproved(approved);
+	public List<Transporter> getTransporters(Boolean approved, Integer pageNo) {
+		if(pageNo == null) {
+			pageNo = 0;
+		}
+		
+		Pageable page = PageRequest.of(pageNo, 2);
+		if(approved!=null) {
+			return transporterdao.findByApproved(approved, page);
+		}
+		
+		return transporterdao.findAll(page).getContent();
 	}
 
 	@Override
-	public TransporterUpdateResponse updateTransporter(String id, Transporter updateTransporter) {
+	public TransporterUpdateResponse updateTransporter(String id, LoadTransporter updateTransporter) {
 		TransporterUpdateResponse updateResponse = new TransporterUpdateResponse();
 		Transporter transporter = new Transporter();
 		Optional<Transporter> T = transporterdao.findById(id);
@@ -98,14 +120,26 @@ public class TransporterServiceImpl implements TransporterService {
 			return updateResponse;
 		}
 
-		if (updateTransporter.getPhoneNo() != 0) {			
+		if (updateTransporter.getPhoneNo() != null) {			
 			updateResponse.setStatus(CommonConstants.error);
 			updateResponse.setMessage(CommonConstants.phoneNoUpdateError);
 			return updateResponse;
 		}
+		
+		if (updateTransporter.getName().trim().length()<1) {
+			updateResponse.setStatus(CommonConstants.error);
+			updateResponse.setMessage(CommonConstants.emptyNameError);
+			return updateResponse;
+		}
+		
+		if (updateTransporter.getCompanyName().trim().length()<1) {
+			updateResponse.setStatus(CommonConstants.error);
+			updateResponse.setMessage(CommonConstants.emptyCompanyNameError);
+			return updateResponse;
+		}
 
 		if (updateTransporter.getName() != null) {
-			transporter.setName(updateTransporter.getName());
+			transporter.setName(updateTransporter.getName().trim());
 		}
 
 		if (updateTransporter.getKyc() != null) {
@@ -113,7 +147,7 @@ public class TransporterServiceImpl implements TransporterService {
 		}
 		
 		if (updateTransporter.getCompanyName() != null) {
-			transporter.setCompanyName(updateTransporter.getCompanyName());
+			transporter.setCompanyName(updateTransporter.getCompanyName().trim());
 		}
 
 		transporter.setApproved(updateTransporter.isApproved());

@@ -13,7 +13,9 @@ public class Transporter {
 	private String id;
 	
 	private String name;
-	private long phoneNo;
+	
+	
+	private Long phoneNo = null;
 	private String kyc;
 	private String companyName;
 	private boolean approved;

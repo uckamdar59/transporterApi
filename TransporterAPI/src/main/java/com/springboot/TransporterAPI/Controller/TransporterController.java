@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.springboot.TransporterAPI.Entity.Transporter;
+import com.springboot.TransporterAPI.Model.LoadTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
 import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
 import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
@@ -24,19 +26,14 @@ public class TransporterController {
 	private TransporterService service;
 	
 	@PostMapping("/transporter")
-	public TransporterCreateResponse addTransporter(@RequestBody Transporter transporter) {
+	public TransporterCreateResponse addTransporter(@RequestBody LoadTransporter transporter) {
 		return service.addTransporter(transporter);
 	}
 	
 	
 	@GetMapping("/transporter")
-	public List<Transporter> getApproved(@RequestParam(required = false) Boolean approved){
-		if(approved==null) {
-			return service.allTransporter();
-		}
-		else {
-			return service.getApproved(approved);
-		}
+	public List<Transporter> getTransporters(@RequestParam(required = false) Boolean approved, @RequestParam(required = false) Integer pageNo){
+		return service.getTransporters(approved, pageNo);
 	}
 	
 	@GetMapping("/transporter/{id}")
@@ -46,7 +43,7 @@ public class TransporterController {
 	
 	
 	@PutMapping("/transporter/{id}")
-	public TransporterUpdateResponse updateTransporter(@PathVariable String id, @RequestBody Transporter transporter){
+	public TransporterUpdateResponse updateTransporter(@PathVariable String id, @RequestBody LoadTransporter transporter){
 		return service.updateTransporter(id, transporter);
 	}
 	

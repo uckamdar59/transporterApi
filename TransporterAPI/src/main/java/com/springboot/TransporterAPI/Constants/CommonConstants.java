@@ -14,4 +14,6 @@ public class CommonConstants {
 	public static String approveRequest = "Please wait for liveasy will approve your request";
 	public static String phoneNoUpdateError = "Phone number cannot be changed";
 	public static String IncorrecPhoneNoError = "Enter 10 digits phone number";
+	public static String emptyCompanyNameError = "Company name cannot be empty or cannot contain only whitespaces";
+	public static String emptyNameError = "Name cannot be empty or cannot contain only whitespaces";
 }
