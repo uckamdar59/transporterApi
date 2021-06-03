@@ -3,10 +3,12 @@ package com.springboot.TransporterAPI.Model;
 import lombok.Data;
 
 @Data
-public class LoadTransporter {
-	private String name;
+public class PostTransporter {
+	
 	private Long phoneNo = null;
-	private String kyc;
+	private String transporterLocation;
+	private String name;
 	private String companyName;
-	private boolean approved;
+	private String kyc;
+	
 }

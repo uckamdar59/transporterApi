@@ -12,11 +12,11 @@ public class Transporter {
 	@Id
 	private String id;
 	
-	private String name;
-	
-	
 	private Long phoneNo = null;
-	private String kyc;
+	private String transporterLocation;
+	private String name;
 	private String companyName;
-	private boolean approved;
+	private String kyc;
+	private boolean companyApproved;
+	private boolean transporterApproved;
 }

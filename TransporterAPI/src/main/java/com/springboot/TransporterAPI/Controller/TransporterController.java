@@ -1,7 +1,6 @@
 package com.springboot.TransporterAPI.Controller;
 
 import java.util.List;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.Model.LoadTransporter;
+import com.springboot.TransporterAPI.Model.PostTransporter;
+import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
 import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
 import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
@@ -25,8 +25,13 @@ public class TransporterController {
 	@Autowired
 	private TransporterService service;
 	
+	@GetMapping("/home")
+	public String home() {
+		return "Welcome to transporterApi...!!!";
+	}
+	
 	@PostMapping("/transporter")
-	public TransporterCreateResponse addTransporter(@RequestBody LoadTransporter transporter) {
+	public TransporterCreateResponse addTransporter(@RequestBody PostTransporter transporter) {
 		return service.addTransporter(transporter);
 	}
 	
@@ -43,7 +48,7 @@ public class TransporterController {
 	
 	
 	@PutMapping("/transporter/{id}")
-	public TransporterUpdateResponse updateTransporter(@PathVariable String id, @RequestBody LoadTransporter transporter){
+	public TransporterUpdateResponse updateTransporter(@PathVariable String id, @RequestBody UpdateTransporter transporter){
 		return service.updateTransporter(id, transporter);
 	}
 	

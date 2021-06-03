@@ -4,18 +4,19 @@ import java.util.List;
 import java.util.UUID;
 
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.Model.LoadTransporter;
+import com.springboot.TransporterAPI.Model.PostTransporter;
+import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
 import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
 import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
 
 public interface TransporterService {
 
-	TransporterCreateResponse addTransporter(LoadTransporter loadTransporter);
+	TransporterCreateResponse addTransporter(PostTransporter postTransporter);
 	
 	List<Transporter> getTransporters(Boolean approved, Integer pageNo);
 
-	TransporterUpdateResponse updateTransporter(String id, LoadTransporter updatetransporter);
+	TransporterUpdateResponse updateTransporter(String id, UpdateTransporter updatetransporter);
 
 	TransporterDeleteResponse deleteTransporter(String id);
 

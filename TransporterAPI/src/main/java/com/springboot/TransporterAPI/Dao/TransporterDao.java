@@ -10,9 +10,12 @@ import com.springboot.TransporterAPI.Entity.Transporter;
 
 @Repository
 public interface TransporterDao extends JpaRepository<Transporter, String>  {
-	@Query("select name from Transporter t where t.phoneNo = :phoneNo")
+	@Query("select id from Transporter t where t.phoneNo = :phoneNo")
 	public String findByPhoneNo(Long phoneNo);
 	
-	public List<Transporter> findByApproved(Boolean approved, Pageable pageable);
+	@Query("select t from Transporter t where t.transporterApproved = :approved AND t.companyApproved = :approved")
+	public List<Transporter> findByApprovedSuccess(Boolean approved, Pageable pageable);
 	
+	@Query("select t from Transporter t where t.transporterApproved = :approved OR t.companyApproved = :approved")
+	public List<Transporter> findByApprovedPending(Boolean approved, Pageable pageable);
 }
