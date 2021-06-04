@@ -14,7 +14,7 @@ public interface TransporterService {
 
 	TransporterCreateResponse addTransporter(PostTransporter postTransporter);
 	
-	List<Transporter> getTransporters(Boolean approved, Integer pageNo);
+	List<Transporter> getTransporters(Boolean transporterApproved, Boolean companyApproved, Integer pageNo);
 
 	TransporterUpdateResponse updateTransporter(String id, UpdateTransporter updatetransporter);
 

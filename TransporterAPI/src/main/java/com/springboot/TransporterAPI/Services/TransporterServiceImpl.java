@@ -47,11 +47,17 @@ public class TransporterServiceImpl implements TransporterService {
 			return createResponse;
 		}
 		
-		String id = null;
-		id = transporterdao.findByPhoneNo(postTransporter.getPhoneNo());
+		Optional<Transporter> t = transporterdao.findByPhoneNo(postTransporter.getPhoneNo());
 
-		if (id != null) {
-			createResponse.setTransporterId(id);
+		if (t.isPresent()) {
+			createResponse.setTransporterId(t.get().getId());
+			createResponse.setPhoneNo(t.get().getPhoneNo());
+			createResponse.setName(t.get().getName());
+			createResponse.setTransporterLocation(t.get().getTransporterLocation());
+			createResponse.setCompanyName(t.get().getCompanyName());
+			createResponse.setKyc(t.get().getKyc());
+			createResponse.setTransporterApproved(t.get().isTransporterApproved());
+			createResponse.setCompanyApproved(t.get().isCompanyApproved());
 			createResponse.setStatus(CommonConstants.error);
 			createResponse.setMessage(CommonConstants.accountExist);
 			return createResponse;
@@ -98,6 +104,13 @@ public class TransporterServiceImpl implements TransporterService {
 		transporterdao.save(transporter);
 		
 		createResponse.setTransporterId(transporter.getId());
+		createResponse.setPhoneNo(transporter.getPhoneNo());
+		createResponse.setName(transporter.getName());
+		createResponse.setTransporterLocation(transporter.getTransporterLocation());
+		createResponse.setCompanyName(transporter.getCompanyName());
+		createResponse.setKyc(transporter.getKyc());
+		createResponse.setTransporterApproved(false);
+		createResponse.setCompanyApproved(false);
 		createResponse.setStatus(CommonConstants.pending);
 		createResponse.setMessage(CommonConstants.approveRequest);
 		return createResponse;
@@ -114,19 +127,21 @@ public class TransporterServiceImpl implements TransporterService {
 	}
 	
 	@Override
-	public List<Transporter> getTransporters(Boolean approved, Integer pageNo) {
+	public List<Transporter> getTransporters(Boolean transporterApproved, Boolean companyApproved, Integer pageNo) {
 		if(pageNo == null) {
 			pageNo = 0;
 		}
 		
 		Pageable page = PageRequest.of(pageNo, 2);
-		if(approved != null) {
-			if(approved) {
-				return transporterdao.findByApprovedSuccess(approved, page);
-			}
-			else if(!approved) {
-				return transporterdao.findByApprovedPending(approved, page);
-			}
+		if((companyApproved != null) && (transporterApproved != null)) {
+			return transporterdao.findByTransporterCompanyApproved(transporterApproved, companyApproved, page);
+		}
+		
+		if(transporterApproved != null) {
+			return transporterdao.findByTransporterApproved(transporterApproved, page);
+		}
+		if(companyApproved != null) {
+			return transporterdao.findByCompanyApproved(companyApproved, page);
 		}
 		
 		return transporterdao.findAll(page).getContent();

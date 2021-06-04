@@ -43,9 +43,9 @@ paths:
       produces:
         - '*/*'
       parameters:
-        - name: approved
+        - name: companyApproved
           in: query
-          description: approved
+          description: companyApproved
           required: false
           type: boolean
         - name: pageNo
@@ -54,6 +54,11 @@ paths:
           required: false
           type: integer
           format: int32
+        - name: transporterApproved
+          in: query
+          description: transporterApproved
+          required: false
+          type: boolean
       responses:
         '200':
           description: OK
@@ -224,11 +229,26 @@ definitions:
   TransporterCreateResponse:
     type: object
     properties:
+      companyApproved:
+        type: boolean
+      companyName:
+        type: string
+      kyc:
+        type: string
       message:
         type: string
+      name:
+        type: string
+      phoneNo:
+        type: integer
+        format: int64
       status:
         type: string
+      transporterApproved:
+        type: boolean
       transporterId:
+        type: string
+      transporterLocation:
         type: string
     title: TransporterCreateResponse
   TransporterDeleteResponse:

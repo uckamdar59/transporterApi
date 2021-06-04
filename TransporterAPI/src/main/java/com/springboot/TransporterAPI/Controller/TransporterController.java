@@ -37,8 +37,10 @@ public class TransporterController {
 	
 	
 	@GetMapping("/transporter")
-	public List<Transporter> getTransporters(@RequestParam(required = false) Boolean approved, @RequestParam(required = false) Integer pageNo){
-		return service.getTransporters(approved, pageNo);
+	public List<Transporter> getTransporters(@RequestParam(required = false) Boolean transporterApproved,
+			@RequestParam(required = false) Boolean companyApproved,
+			@RequestParam(required = false) Integer pageNo){
+		return service.getTransporters(transporterApproved, companyApproved, pageNo);
 	}
 	
 	@GetMapping("/transporter/{id}")
