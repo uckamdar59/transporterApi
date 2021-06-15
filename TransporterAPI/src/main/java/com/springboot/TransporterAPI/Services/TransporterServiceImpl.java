@@ -58,6 +58,7 @@ public class TransporterServiceImpl implements TransporterService {
 			createResponse.setKyc(t.get().getKyc());
 			createResponse.setTransporterApproved(t.get().isTransporterApproved());
 			createResponse.setCompanyApproved(t.get().isCompanyApproved());
+			createResponse.setAccountVerificationInProgress(t.get().isAccountVerificationInProgress());
 			createResponse.setStatus(CommonConstants.error);
 			createResponse.setMessage(CommonConstants.accountExist);
 			return createResponse;
@@ -101,6 +102,7 @@ public class TransporterServiceImpl implements TransporterService {
 		transporter.setKyc(postTransporter.getKyc());
 		transporter.setTransporterApproved(false);
 		transporter.setCompanyApproved(false);
+		transporter.setAccountVerificationInProgress(false);
 		transporterdao.save(transporter);
 		
 		createResponse.setTransporterId(transporter.getId());
@@ -109,8 +111,9 @@ public class TransporterServiceImpl implements TransporterService {
 		createResponse.setTransporterLocation(transporter.getTransporterLocation());
 		createResponse.setCompanyName(transporter.getCompanyName());
 		createResponse.setKyc(transporter.getKyc());
-		createResponse.setTransporterApproved(false);
-		createResponse.setCompanyApproved(false);
+		createResponse.setTransporterApproved(transporter.isTransporterApproved());
+		createResponse.setCompanyApproved(transporter.isCompanyApproved());
+		createResponse.setAccountVerificationInProgress(transporter.isAccountVerificationInProgress());
 		createResponse.setStatus(CommonConstants.pending);
 		createResponse.setMessage(CommonConstants.approveRequest);
 		return createResponse;
@@ -198,8 +201,21 @@ public class TransporterServiceImpl implements TransporterService {
 			if (updateTransporter.getCompanyApproved() != null) {
 				transporter.setCompanyApproved(updateTransporter.getCompanyApproved());
 			}
+			
+			if(updateTransporter.getAccountVerificationInProgress() != null) {
+				transporter.setAccountVerificationInProgress(updateTransporter.getAccountVerificationInProgress());
+			}
 	
 			transporterdao.save(transporter);
+			updateResponse.setTransporterId(transporter.getId());
+			updateResponse.setPhoneNo(transporter.getPhoneNo());
+			updateResponse.setName(transporter.getName());
+			updateResponse.setTransporterLocation(transporter.getTransporterLocation());
+			updateResponse.setCompanyName(transporter.getCompanyName());
+			updateResponse.setKyc(transporter.getKyc());
+			updateResponse.setTransporterApproved(transporter.isTransporterApproved());
+			updateResponse.setCompanyApproved(transporter.isCompanyApproved());
+			updateResponse.setAccountVerificationInProgress(transporter.isAccountVerificationInProgress());
 			updateResponse.setStatus(CommonConstants.success);
 			updateResponse.setMessage(CommonConstants.updateSuccess);
 			return updateResponse;

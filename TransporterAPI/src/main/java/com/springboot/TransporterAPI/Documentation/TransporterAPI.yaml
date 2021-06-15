@@ -1,31 +1,62 @@
 swagger: '2.0'
 info:
-  description: Transporter API Documentation
+  description: TransporterAPI Documentation
   version: '1.0'
-  title: Transporter APIs
+  title: TransporterAPI Documentation
   termsOfService: 'urn:tos'
   contact: {}
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
-host: 'localhost:8080'
+host: 'localhost:9090'
 basePath: /
 tags:
-  - name: transporter
-    description: Transporter
+  - name: transporter-controller
+    description: Transporter Controller
 paths:
+  /home:
+    get:
+      tags:
+        - transporter-controller
+      summary: home
+      operationId: homeUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
   /transporter:
     get:
       tags:
-        - transporter
-      summary: getApproved
-      operationId: getApprovedUsingGET
+        - transporter-controller
+      summary: getTransporters
+      operationId: getTransportersUsingGET
       produces:
         - '*/*'
       parameters:
-        - name: approved
+        - name: companyApproved
           in: query
-          description: approved
+          description: companyApproved
+          required: false
+          type: boolean
+        - name: pageNo
+          in: query
+          description: pageNo
+          required: false
+          type: integer
+          format: int32
+        - name: transporterApproved
+          in: query
+          description: transporterApproved
           required: false
           type: boolean
       responses:
@@ -44,7 +75,7 @@ paths:
       deprecated: false
     post:
       tags:
-        - transporter
+        - transporter-controller
       summary: addTransporter
       operationId: addTransporterUsingPOST
       consumes:
@@ -57,7 +88,7 @@ paths:
           description: transporter
           required: true
           schema:
-            $ref: '#/definitions/Transporter'
+            $ref: '#/definitions/PostTransporter'
       responses:
         '200':
           description: OK
@@ -75,7 +106,7 @@ paths:
   '/transporter/{id}':
     get:
       tags:
-        - transporter
+        - transporter-controller
       summary: getOneTransporter
       operationId: getOneTransporterUsingGET
       produces:
@@ -100,7 +131,7 @@ paths:
       deprecated: false
     put:
       tags:
-        - transporter
+        - transporter-controller
       summary: updateTransporter
       operationId: updateTransporterUsingPUT
       consumes:
@@ -118,7 +149,7 @@ paths:
           description: transporter
           required: true
           schema:
-            $ref: '#/definitions/Transporter'
+            $ref: '#/definitions/UpdateTransporter'
       responses:
         '200':
           description: OK
@@ -135,7 +166,7 @@ paths:
       deprecated: false
     delete:
       tags:
-        - transporter
+        - transporter-controller
       summary: deleteTransporter
       operationId: deleteTransporterUsingDELETE
       produces:
@@ -159,10 +190,27 @@ paths:
           description: Forbidden
       deprecated: false
 definitions:
+  PostTransporter:
+    type: object
+    properties:
+      companyName:
+        type: string
+      kyc:
+        type: string
+      name:
+        type: string
+      phoneNo:
+        type: integer
+        format: int64
+      transporterLocation:
+        type: string
+    title: PostTransporter
   Transporter:
     type: object
     properties:
-      approved:
+      accountVerificationInProgress:
+        type: boolean
+      companyApproved:
         type: boolean
       companyName:
         type: string
@@ -175,13 +223,36 @@ definitions:
       phoneNo:
         type: integer
         format: int64
+      transporterApproved:
+        type: boolean
+      transporterLocation:
+        type: string
     title: Transporter
   TransporterCreateResponse:
     type: object
     properties:
+      accountVerificationInProgress:
+        type: boolean
+      companyApproved:
+        type: boolean
+      companyName:
+        type: string
+      kyc:
+        type: string
       message:
         type: string
+      name:
+        type: string
+      phoneNo:
+        type: integer
+        format: int64
       status:
+        type: string
+      transporterApproved:
+        type: boolean
+      transporterId:
+        type: string
+      transporterLocation:
         type: string
     title: TransporterCreateResponse
   TransporterDeleteResponse:
@@ -195,8 +266,48 @@ definitions:
   TransporterUpdateResponse:
     type: object
     properties:
+      accountVerificationInProgress:
+        type: boolean
+      companyApproved:
+        type: boolean
+      companyName:
+        type: string
+      kyc:
+        type: string
       message:
         type: string
+      name:
+        type: string
+      phoneNo:
+        type: integer
+        format: int64
       status:
         type: string
+      transporterApproved:
+        type: boolean
+      transporterId:
+        type: string
+      transporterLocation:
+        type: string
     title: TransporterUpdateResponse
+  UpdateTransporter:
+    type: object
+    properties:
+      accountVerificationInProgress:
+        type: boolean
+      companyApproved:
+        type: boolean
+      companyName:
+        type: string
+      kyc:
+        type: string
+      name:
+        type: string
+      phoneNo:
+        type: integer
+        format: int64
+      transporterApproved:
+        type: boolean
+      transporterLocation:
+        type: string
+    title: UpdateTransporter

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PostTransporter {
 	
-	private Long phoneNo = null;
+	private Long phoneNo;
 	private String transporterLocation;
 	private String name;
 	private String companyName;

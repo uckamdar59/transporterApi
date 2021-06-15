@@ -4,14 +4,16 @@ import lombok.Data;
 
 @Data
 public class TransporterCreateResponse {
+	private String status;
+	private String message;
+	
 	private String transporterId;
-	private Long phoneNo = null;
-	private String transporterLocation;
+	private Long phoneNo;
 	private String name;
 	private String companyName;
+	private String transporterLocation;
 	private String kyc;
 	private Boolean companyApproved;
 	private Boolean transporterApproved;
-	private String status;
-	private String message;
+	private Boolean accountVerificationInProgress;
 }
