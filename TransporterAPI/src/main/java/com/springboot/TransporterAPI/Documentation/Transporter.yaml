@@ -103,7 +103,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/transporter/{id}':
+  '/transporter/{transporterId}':
     get:
       tags:
         - transporter-controller
@@ -112,9 +112,9 @@ paths:
       produces:
         - '*/*'
       parameters:
-        - name: id
+        - name: transporterId
           in: path
-          description: id
+          description: transporterId
           required: true
           type: string
       responses:
@@ -139,17 +139,17 @@ paths:
       produces:
         - '*/*'
       parameters:
-        - name: id
-          in: path
-          description: id
-          required: true
-          type: string
         - in: body
           name: transporter
           description: transporter
           required: true
           schema:
             $ref: '#/definitions/UpdateTransporter'
+        - name: transporterId
+          in: path
+          description: transporterId
+          required: true
+          type: string
       responses:
         '200':
           description: OK
@@ -172,9 +172,9 @@ paths:
       produces:
         - '*/*'
       parameters:
-        - name: id
+        - name: transporterId
           in: path
-          description: id
+          description: transporterId
           required: true
           type: string
       responses:
@@ -197,12 +197,12 @@ definitions:
         type: string
       kyc:
         type: string
-      name:
-        type: string
       phoneNo:
         type: integer
         format: int64
       transporterLocation:
+        type: string
+      transporterName:
         type: string
     title: PostTransporter
   Transporter:
@@ -214,18 +214,18 @@ definitions:
         type: boolean
       companyName:
         type: string
-      id:
-        type: string
       kyc:
-        type: string
-      name:
         type: string
       phoneNo:
         type: integer
         format: int64
       transporterApproved:
         type: boolean
+      transporterId:
+        type: string
       transporterLocation:
+        type: string
+      transporterName:
         type: string
     title: Transporter
   TransporterCreateResponse:
@@ -241,8 +241,6 @@ definitions:
         type: string
       message:
         type: string
-      name:
-        type: string
       phoneNo:
         type: integer
         format: int64
@@ -253,6 +251,8 @@ definitions:
       transporterId:
         type: string
       transporterLocation:
+        type: string
+      transporterName:
         type: string
     title: TransporterCreateResponse
   TransporterDeleteResponse:
@@ -276,8 +276,6 @@ definitions:
         type: string
       message:
         type: string
-      name:
-        type: string
       phoneNo:
         type: integer
         format: int64
@@ -288,6 +286,8 @@ definitions:
       transporterId:
         type: string
       transporterLocation:
+        type: string
+      transporterName:
         type: string
     title: TransporterUpdateResponse
   UpdateTransporter:
@@ -301,13 +301,13 @@ definitions:
         type: string
       kyc:
         type: string
-      name:
-        type: string
       phoneNo:
         type: integer
         format: int64
       transporterApproved:
         type: boolean
       transporterLocation:
+        type: string
+      transporterName:
         type: string
     title: UpdateTransporter
