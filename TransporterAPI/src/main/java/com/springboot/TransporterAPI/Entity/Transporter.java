@@ -14,9 +14,9 @@ public class Transporter {
 	@Id
 	private String transporterId;
 	private Long phoneNo;
-	private String transporterLocation;
 	private String transporterName;
 	private String companyName;
+	private String transporterLocation;
 	private String kyc;
 	private boolean companyApproved;
 	private boolean transporterApproved;
