@@ -1,6 +1,7 @@
 package com.springboot.TransporterAPI.Controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,21 +44,21 @@ public class TransporterController {
 		return service.getTransporters(transporterApproved, companyApproved, pageNo);
 	}
 	
-	@GetMapping("/transporter/{id}")
-	private Transporter getOneTransporter(@PathVariable String id) {
-		return service.getOneTransporter(id);
+	@GetMapping("/transporter/{transporterId}")
+	private Transporter getOneTransporter(@PathVariable String transporterId) {
+		return service.getOneTransporter(transporterId);
 	}
 	
 	
-	@PutMapping("/transporter/{id}")
-	public TransporterUpdateResponse updateTransporter(@PathVariable String id, @RequestBody UpdateTransporter transporter){
-		return service.updateTransporter(id, transporter);
+	@PutMapping("/transporter/{transporterId}")
+	public TransporterUpdateResponse updateTransporter(@PathVariable String transporterId, @RequestBody UpdateTransporter transporter){
+		return service.updateTransporter(transporterId, transporter);
 	}
 	
 	
-	@DeleteMapping("/transporter/{id}")
-	public TransporterDeleteResponse deleteTransporter(@PathVariable String id){
-		return service.deleteTransporter(id);
+	@DeleteMapping("/transporter/{transporterId}")
+	public TransporterDeleteResponse deleteTransporter(@PathVariable String transporterId){
+		return service.deleteTransporter(transporterId);
 	}
 
 }

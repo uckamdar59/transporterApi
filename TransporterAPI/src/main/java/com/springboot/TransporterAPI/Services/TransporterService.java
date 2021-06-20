@@ -1,7 +1,6 @@
 package com.springboot.TransporterAPI.Services;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.springboot.TransporterAPI.Entity.Transporter;
 import com.springboot.TransporterAPI.Model.PostTransporter;
@@ -16,10 +15,10 @@ public interface TransporterService {
 	
 	List<Transporter> getTransporters(Boolean transporterApproved, Boolean companyApproved, Integer pageNo);
 
-	TransporterUpdateResponse updateTransporter(String id, UpdateTransporter updatetransporter);
+	TransporterUpdateResponse updateTransporter(String transporterId, UpdateTransporter updatetransporter);
 
-	TransporterDeleteResponse deleteTransporter(String id);
+	TransporterDeleteResponse deleteTransporter(String transporterId);
 
-	Transporter getOneTransporter(String id);
+	Transporter getOneTransporter(String transporterId);
 
 }

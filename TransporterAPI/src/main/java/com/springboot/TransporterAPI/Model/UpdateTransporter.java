@@ -6,7 +6,7 @@ import lombok.Data;
 public class UpdateTransporter {
 	private Long phoneNo;
 	private String transporterLocation;
-	private String name;
+	private String transporterName;
 	private String companyName;
 	private String kyc;
 	private Boolean companyApproved;
