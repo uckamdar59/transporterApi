@@ -6,9 +6,9 @@ import lombok.Data;
 public class TransporterUpdateResponse {
 	private String status;
 	private String message;
-	
+
 	private String transporterId;
-	private Long phoneNo;
+	private String phoneNo;
 	private String transporterName;
 	private String companyName;
 	private String transporterLocation;
