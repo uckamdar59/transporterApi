@@ -9,8 +9,6 @@ public class TransporterApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TransporterApiApplication.class, args);
-		Long a = 9999999999L;
-		System.out.println(a);
 	}
 
 }
