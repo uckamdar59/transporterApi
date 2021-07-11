@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.TransporterAPI.Entity.Transporter;
-import com.springboot.TransporterAPI.Model.PostTransporter;
 import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Services.TransporterService;
 
@@ -54,14 +53,14 @@ public class TransporterController {
 	@GetMapping("/transporter/{transporterId}")
 	private ResponseEntity<Object> getOneTransporter(@PathVariable String transporterId) {
 		log.info("Get Controller Started");
-		return new ResponseEntity<>( service.getOneTransporter(transporterId),HttpStatus.FOUND);
+		return new ResponseEntity<>( service.getOneTransporter(transporterId),HttpStatus.OK);
 	}
 
 
 	@PutMapping("/transporter/{transporterId}")
 	public ResponseEntity<Object> updateTransporter(@PathVariable String transporterId, @RequestBody UpdateTransporter transporter){
 		log.info("Put Controller Started");
-		return new ResponseEntity<>(service.updateTransporter(transporterId, transporter),HttpStatus.FOUND);
+		return new ResponseEntity<>(service.updateTransporter(transporterId, transporter),HttpStatus.OK);
 	}
 
 
