@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TransporterServiceImpl implements TransporterService {
 
-	String temp="";
+
 	@Autowired
 	private TransporterDao transporterdao;
 
@@ -36,6 +36,7 @@ public class TransporterServiceImpl implements TransporterService {
 	public TransporterCreateResponse addTransporter(PostTransporter postTransporter) {
 		log.info("addTransporter service is started");
 
+		String temp="";
 		Transporter transporter =new Transporter();
 		TransporterCreateResponse response = new TransporterCreateResponse();
 
@@ -64,7 +65,7 @@ public class TransporterServiceImpl implements TransporterService {
 			transporter.setTransporterLocation(temp.trim());
 			response.setTransporterLocation(temp.trim());
 		}
-		
+
 		temp=postTransporter.getKyc();
 		if(StringUtils.isNotBlank(temp)) {
 			transporter.setKyc(temp.trim());
@@ -148,6 +149,7 @@ public class TransporterServiceImpl implements TransporterService {
 		if(T.isEmpty())
 			throw new EntityNotFoundException(Transporter.class, "id", transporterId.toString());
 
+		String temp="";
 		Transporter transporter = T.get();
 
 		//what does this mean ?
