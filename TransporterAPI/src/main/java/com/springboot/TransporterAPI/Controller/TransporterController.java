@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.TransporterAPI.Entity.Transporter;
+import com.springboot.TransporterAPI.Model.PostTransporter;
 import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Services.TransporterService;
 
@@ -35,7 +36,7 @@ public class TransporterController {
 	}
 
 	@PostMapping("/transporter")
-	public ResponseEntity<Object> addTransporter(@Valid @RequestBody  Transporter transporter) {
+	public ResponseEntity<Object> addTransporter(@Valid @RequestBody  PostTransporter transporter) {
 		log.info("Post Controller Started");
 		return new ResponseEntity<>(service.addTransporter(transporter),HttpStatus.CREATED);
 	}
@@ -47,7 +48,7 @@ public class TransporterController {
 			@RequestParam(required = false) Boolean companyApproved,
 			@RequestParam(required = false) Integer pageNo){
 		log.info("Get with Params Controller Started");
-		return new ResponseEntity<>(service.getTransporters(transporterApproved, companyApproved, pageNo),HttpStatus.FOUND);
+		return new ResponseEntity<>(service.getTransporters(transporterApproved, companyApproved, pageNo),HttpStatus.OK);
 	}
 
 	@GetMapping("/transporter/{transporterId}")

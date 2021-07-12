@@ -10,7 +10,7 @@ import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
 
 public interface TransporterService {
 
-	public TransporterCreateResponse addTransporter(Transporter postTransporter);
+	public TransporterCreateResponse addTransporter(PostTransporter postTransporter);
 
 	public List<Transporter> getTransporters(Boolean transporterApproved, Boolean companyApproved, Integer pageNo);
 

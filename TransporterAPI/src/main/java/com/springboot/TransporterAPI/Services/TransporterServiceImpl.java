@@ -16,6 +16,7 @@ import com.springboot.TransporterAPI.Exception.EntityNotFoundException;
 import com.springboot.TransporterAPI.Constants.CommonConstants;
 import com.springboot.TransporterAPI.Dao.TransporterDao;
 import com.springboot.TransporterAPI.Entity.Transporter;
+import com.springboot.TransporterAPI.Model.PostTransporter;
 import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
 import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
@@ -32,34 +33,61 @@ public class TransporterServiceImpl implements TransporterService {
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public TransporterCreateResponse addTransporter(Transporter transporter) {
+	public TransporterCreateResponse addTransporter(PostTransporter postTransporter) {
 		log.info("addTransporter service is started");
 
-		TransporterCreateResponse createResponse = new TransporterCreateResponse();
+		Transporter transporter =new Transporter();
+		TransporterCreateResponse response = new TransporterCreateResponse();
 
-		transporter.setTransporterId("transporter:"+UUID.randomUUID());
+		temp="transporter:"+UUID.randomUUID();
+		transporter.setTransporterId(temp);
+		response.setTransporterId(temp);
+
+		temp=postTransporter.getPhoneNo();
+		transporter.setPhoneNo(temp);
+		response.setPhoneNo(temp);
+
+		temp=postTransporter.getTransporterName();
+		if(StringUtils.isNotBlank(temp)) {
+			transporter.setTransporterName(temp.trim());
+			response.setTransporterName(temp.trim());
+		}
+
+		temp=postTransporter.getCompanyName();
+		if(StringUtils.isNotBlank(temp)) {
+			transporter.setCompanyName(temp.trim());
+			response.setCompanyName(temp.trim());
+		}
+
+		temp=postTransporter.getTransporterLocation();
+		if(StringUtils.isNotBlank(temp)) {
+			transporter.setTransporterLocation(temp.trim());
+			response.setTransporterLocation(temp.trim());
+		}
+		
+		temp=postTransporter.getKyc();
+		if(StringUtils.isNotBlank(temp)) {
+			transporter.setKyc(temp.trim());
+			response.setKyc(temp.trim());
+		}
+
 		transporter.setTransporterApproved(false);
-		transporter.setCompanyApproved(false);
-		transporter.setAccountVerificationInProgress(false);
+		response.setTransporterApproved(false);
 
+		transporter.setCompanyApproved(false);
+		response.setCompanyApproved(false);
+
+		transporter.setAccountVerificationInProgress(false);
+		response.setAccountVerificationInProgress(false);
 
 		transporterdao.save(transporter);
 		log.info("transporter is saved to the database");
 
-		createResponse.setTransporterId(transporter.getTransporterId());
-		createResponse.setPhoneNo(transporter.getPhoneNo());
-		createResponse.setTransporterName(transporter.getTransporterName());
-		createResponse.setTransporterLocation(transporter.getTransporterLocation());
-		createResponse.setCompanyName(transporter.getCompanyName());
-		createResponse.setKyc(transporter.getKyc());
-		createResponse.setTransporterApproved(transporter.isTransporterApproved());
-		createResponse.setCompanyApproved(transporter.isCompanyApproved());
-		createResponse.setAccountVerificationInProgress(transporter.isAccountVerificationInProgress());
-		createResponse.setStatus(CommonConstants.pending);
-		createResponse.setMessage(CommonConstants.approveRequest);
+		response.setStatus(CommonConstants.pending);
+		response.setMessage(CommonConstants.approveRequest);
 
 		log.info("addTransporter response is returned");
-		return createResponse;
+		return response;
 
 	}
 
