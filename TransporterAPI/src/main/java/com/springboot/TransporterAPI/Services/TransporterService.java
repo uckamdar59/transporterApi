@@ -6,19 +6,18 @@ import com.springboot.TransporterAPI.Entity.Transporter;
 import com.springboot.TransporterAPI.Model.PostTransporter;
 import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
-import com.springboot.TransporterAPI.Response.TransporterDeleteResponse;
 import com.springboot.TransporterAPI.Response.TransporterUpdateResponse;
 
 public interface TransporterService {
 
-	TransporterCreateResponse addTransporter(PostTransporter postTransporter);
-	
-	List<Transporter> getTransporters(Boolean transporterApproved, Boolean companyApproved, Integer pageNo);
+	public TransporterCreateResponse addTransporter(PostTransporter postTransporter);
 
-	TransporterUpdateResponse updateTransporter(String transporterId, UpdateTransporter updatetransporter);
+	public List<Transporter> getTransporters(Boolean transporterApproved, Boolean companyApproved, Integer pageNo);
 
-	TransporterDeleteResponse deleteTransporter(String transporterId);
+	public TransporterUpdateResponse updateTransporter(String transporterId, UpdateTransporter updatetransporter);
 
-	Transporter getOneTransporter(String transporterId);
+	public void deleteTransporter(String transporterId);
+
+	public Transporter getOneTransporter(String transporterId);
 
 }
