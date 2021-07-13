@@ -26,8 +26,9 @@ public class Transporter {
 	private String transporterLocation;
 	private String kyc;
 	private boolean companyApproved;
-	private boolean transporterApproved;
 
+	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean transporterApproved;
 
 	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
 	private boolean accountVerificationInProgress;

@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 @ControllerAdvice
@@ -221,6 +222,14 @@ public class TransporterExceptionAdvice extends ResponseEntityExceptionHandler{
 		transporterErrorResponse.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
 		transporterErrorResponse.setDebugMessage(ex.getMessage());
 		return buildResponseEntity(transporterErrorResponse);
+	}
+
+	@ExceptionHandler(BusinessException.class)
+	protected ResponseEntity<Object> handleBusinessException(BusinessException ex){
+		log.error("handleBusiness Exception is started");
+		TransporterErrorResponse response = new TransporterErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY);
+		response.setMessage(ex.getMessage());
+		return buildResponseEntity(response);
 	}
 
 	@ExceptionHandler(Exception.class)  

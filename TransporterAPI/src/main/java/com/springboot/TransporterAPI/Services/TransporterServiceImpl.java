@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.springboot.TransporterAPI.Exception.BusinessException;
 import com.springboot.TransporterAPI.Exception.EntityNotFoundException;
 import com.springboot.TransporterAPI.Constants.CommonConstants;
 import com.springboot.TransporterAPI.Dao.TransporterDao;
@@ -152,12 +153,9 @@ public class TransporterServiceImpl implements TransporterService {
 		String temp="";
 		Transporter transporter = T.get();
 
-		//what does this mean ?
-		//		if (updateTransporter.getPhoneNo() != null) {			
-		//			updateResponse.setStatus(CommonConstants.error);
-		//			updateResponse.setMessage(CommonConstants.phoneNoUpdateError);
-		//			return updateResponse;
-		//		}
+		if (updateTransporter.getPhoneNo() != null) {			
+			throw new BusinessException("Phone no can't be updated");
+		}
 
 		temp=updateTransporter.getTransporterName();
 		if (StringUtils.isNotBlank(temp)) {
