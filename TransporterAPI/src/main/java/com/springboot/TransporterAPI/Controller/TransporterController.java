@@ -53,7 +53,7 @@ public class TransporterController {
 
 	@GetMapping("/transporter/{transporterId}")
 	private ResponseEntity<Object> getOneTransporter(@PathVariable String transporterId) {
-		log.info("Get Controller Started");
+		log.info("Get by transporterId Controller Started");
 		return new ResponseEntity<>( service.getOneTransporter(transporterId),HttpStatus.OK);
 	}
 
