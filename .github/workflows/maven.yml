@@ -27,7 +27,7 @@ jobs:
       run: mvn -B package --file pom.xml
       
       
-    - run: cd ~/actions-runner-transporter/deploy/transporterApi/transporterApi/TransporterAPI
+    - run: cd ~/actions-runner/deploy/transporterApi/transporterApi/TransporterAPI
     - run: sudo docker container stop transporter-container || true
     - run: sudo docker container stop transporter-postgres || true
     - run: sudo docker container rm transporter-container
