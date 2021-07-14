@@ -61,8 +61,8 @@ public class TransporterServiceImpl implements TransporterService {
 		response.setTransporterId(temp);
 
 		temp=postTransporter.getPhoneNo();
-		transporter.setPhoneNo(postTransporter.getPhoneNo());
-		response.setPhoneNo(postTransporter.getPhoneNo());
+		transporter.setPhoneNo(temp);
+		response.setPhoneNo(temp);
 
 		temp=postTransporter.getTransporterName();
 		if(StringUtils.isNotBlank(temp)) {
