@@ -41,13 +41,28 @@ public class TransporterServiceImpl implements TransporterService {
 		Transporter transporter =new Transporter();
 		TransporterCreateResponse response = new TransporterCreateResponse();
 
+		Optional<Transporter> t = transporterdao.findByPhoneNo(postTransporter.getPhoneNo());
+		if (t.isPresent()) {
+			response.setTransporterId(t.get().getTransporterId());
+			response.setPhoneNo(t.get().getPhoneNo());
+			response.setTransporterName(t.get().getTransporterName());
+			response.setTransporterLocation(t.get().getTransporterLocation());
+			response.setCompanyName(t.get().getCompanyName());
+			response.setKyc(t.get().getKyc());
+			response.setTransporterApproved(t.get().isTransporterApproved());
+			response.setCompanyApproved(t.get().isCompanyApproved());
+			response.setAccountVerificationInProgress(t.get().isAccountVerificationInProgress());
+			response.setMessage(CommonConstants.accountExist);
+			return response;
+		}
+
 		temp="transporter:"+UUID.randomUUID();
 		transporter.setTransporterId(temp);
 		response.setTransporterId(temp);
 
 		temp=postTransporter.getPhoneNo();
-		transporter.setPhoneNo(temp);
-		response.setPhoneNo(temp);
+		transporter.setPhoneNo(postTransporter.getPhoneNo());
+		response.setPhoneNo(postTransporter.getPhoneNo());
 
 		temp=postTransporter.getTransporterName();
 		if(StringUtils.isNotBlank(temp)) {
