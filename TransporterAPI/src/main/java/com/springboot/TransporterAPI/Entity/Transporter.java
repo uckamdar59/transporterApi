@@ -14,6 +14,7 @@ import lombok.Data;
 @Table(name = "Transporter")
 @Entity
 public class Transporter {
+	
 	@Id
 	private String transporterId;
 	@Column(unique=true)
@@ -32,4 +33,5 @@ public class Transporter {
 
 	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
 	private boolean accountVerificationInProgress;
+	
 }

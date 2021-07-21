@@ -232,12 +232,12 @@ public class TransporterExceptionAdvice extends ResponseEntityExceptionHandler{
 		return buildResponseEntity(response);
 	}
 
-	@ExceptionHandler(Exception.class)  
-	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request)  
-	{  
-		log.error("handleAllExceptions is started");
-		return buildResponseEntity(new TransporterErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR , ex));
-	} 
+//	@ExceptionHandler(Exception.class)  
+//	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request)  
+//	{  
+//		log.error("handleAllExceptions is started");
+//		return buildResponseEntity(new TransporterErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR , ex));
+//	} 
 
 	private ResponseEntity<Object> buildResponseEntity(TransporterErrorResponse transporterErrorResponse) {
 		return new ResponseEntity<>(transporterErrorResponse, transporterErrorResponse.getStatus());

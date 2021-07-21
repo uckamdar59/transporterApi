@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@CrossOrigin
 public class TransporterController {
 
 	@Autowired
 	private TransporterService service;
+	@Autowired
+	private com.springboot.TransporterAPI.SecurityConfig.JwtTokenUtil jwtTokenUtil;
 
 	@GetMapping("/home")
 	public String home() {
@@ -38,11 +42,12 @@ public class TransporterController {
 	@PostMapping("/transporter")
 	public ResponseEntity<Object> addTransporter(@Valid @RequestBody  PostTransporter transporter) {
 		log.info("Post Controller Started");
+		final String token = jwtTokenUtil.generateToken(transporter);
 		return new ResponseEntity<>(service.addTransporter(transporter),HttpStatus.CREATED);
 	}
 
 
-	@GetMapping("/transporter")
+	@GetMapping("/transporters")
 	public ResponseEntity<List<Transporter>> getTransporters(
 			@RequestParam(required = false) Boolean transporterApproved,
 			@RequestParam(required = false) Boolean companyApproved,

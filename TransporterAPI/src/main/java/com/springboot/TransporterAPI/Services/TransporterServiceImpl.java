@@ -17,6 +17,7 @@ import com.springboot.TransporterAPI.Exception.EntityNotFoundException;
 import com.springboot.TransporterAPI.Constants.CommonConstants;
 import com.springboot.TransporterAPI.Dao.TransporterDao;
 import com.springboot.TransporterAPI.Entity.Transporter;
+import com.springboot.TransporterAPI.Model.JwtResponse;
 import com.springboot.TransporterAPI.Model.PostTransporter;
 import com.springboot.TransporterAPI.Model.UpdateTransporter;
 import com.springboot.TransporterAPI.Response.TransporterCreateResponse;
@@ -32,6 +33,10 @@ public class TransporterServiceImpl implements TransporterService {
 	@Autowired
 	private TransporterDao transporterdao;
 
+	@Autowired
+	private com.springboot.TransporterAPI.SecurityConfig.JwtTokenUtil jwtTokenUtil;
+
+
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public TransporterCreateResponse addTransporter(PostTransporter postTransporter) {
@@ -39,12 +44,18 @@ public class TransporterServiceImpl implements TransporterService {
 
 		String temp="";
 		Transporter transporter =new Transporter();
+		log.info("221transporter is saved to the database");
+		
 		TransporterCreateResponse response = new TransporterCreateResponse();
-
+		log.info("331transporter is saved to the database");
+		
 		Optional<Transporter> t = transporterdao.findByPhoneNo(postTransporter.getPhoneNo());
+		log.info("991transporter is saved to the database");
 		if (t.isPresent()) {
 			response.setTransporterId(t.get().getTransporterId());
+			log.info("000transporter is saved to the database");
 			response.setPhoneNo(t.get().getPhoneNo());
+			log.info("ubh--1transporter is saved to the database");
 			response.setTransporterName(t.get().getTransporterName());
 			response.setTransporterLocation(t.get().getTransporterLocation());
 			response.setCompanyName(t.get().getCompanyName());
@@ -59,11 +70,11 @@ public class TransporterServiceImpl implements TransporterService {
 		temp="transporter:"+UUID.randomUUID();
 		transporter.setTransporterId(temp);
 		response.setTransporterId(temp);
-
+		log.info("441transporter is saved to the database");
 		temp=postTransporter.getPhoneNo();
 		transporter.setPhoneNo(temp);
 		response.setPhoneNo(temp);
-
+		log.info("51transporter is saved to the database");
 		temp=postTransporter.getTransporterName();
 		if(StringUtils.isNotBlank(temp)) {
 			transporter.setTransporterName(temp.trim());
@@ -87,7 +98,7 @@ public class TransporterServiceImpl implements TransporterService {
 			transporter.setKyc(temp.trim());
 			response.setKyc(temp.trim());
 		}
-
+		log.info("631transporter is saved to the database");
 		transporter.setTransporterApproved(false);
 		response.setTransporterApproved(false);
 
@@ -97,11 +108,19 @@ public class TransporterServiceImpl implements TransporterService {
 		transporter.setAccountVerificationInProgress(false);
 		response.setAccountVerificationInProgress(false);
 
+		
+		
+		log.info("441transporter is saved to the database");
+		
 		transporterdao.save(transporter);
+		log.info("111transporter is saved to the database");
+		
+		final String token = jwtTokenUtil.generateToken(postTransporter);
 		log.info("transporter is saved to the database");
 
 		response.setStatus(CommonConstants.pending);
 		response.setMessage(CommonConstants.approveRequest);
+response.setJwttoken(token);
 
 		log.info("addTransporter response is returned");
 		return response;
