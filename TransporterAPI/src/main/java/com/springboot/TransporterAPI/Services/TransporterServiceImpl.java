@@ -33,9 +33,12 @@ public class TransporterServiceImpl implements TransporterService {
 	@Autowired
 	private TransporterDao transporterdao;
 
+//	@Autowired
+//	private com.springboot.TransporterAPI.SecurityConfig.JwtTokenUtil jwtTokenUtil;
+//	
+	
 	@Autowired
-	private com.springboot.TransporterAPI.SecurityConfig.JwtTokenUtil jwtTokenUtil;
-
+	private com.springboot.TransporterAPI.SecurityConfig.HMAC hmac;
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
@@ -64,6 +67,8 @@ public class TransporterServiceImpl implements TransporterService {
 			response.setCompanyApproved(t.get().isCompanyApproved());
 			response.setAccountVerificationInProgress(t.get().isAccountVerificationInProgress());
 			response.setMessage(CommonConstants.accountExist);
+		//	final String token = jwtTokenUtil.generateToken(transporter.getTransporterId());
+			//response.setJwttoken(token);
 			return response;
 		}
 
@@ -115,12 +120,14 @@ public class TransporterServiceImpl implements TransporterService {
 		transporterdao.save(transporter);
 		log.info("111transporter is saved to the database");
 		
-		final String token = jwtTokenUtil.generateToken(postTransporter);
+	//	final String token = jwtTokenUtil.generateToken(transporter.getTransporterId());
+		
+		final String token1= hmac.createJwtSignedHMAC(transporter);
 		log.info("transporter is saved to the database");
 
 		response.setStatus(CommonConstants.pending);
 		response.setMessage(CommonConstants.approveRequest);
-response.setJwttoken(token);
+		response.setJwttoken(token1);
 
 		log.info("addTransporter response is returned");
 		return response;

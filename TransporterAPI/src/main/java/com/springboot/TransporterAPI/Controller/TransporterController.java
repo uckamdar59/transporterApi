@@ -31,8 +31,8 @@ public class TransporterController {
 
 	@Autowired
 	private TransporterService service;
-	@Autowired
-	private com.springboot.TransporterAPI.SecurityConfig.JwtTokenUtil jwtTokenUtil;
+//	@Autowired
+//	private com.springboot.TransporterAPI.SecurityConfig.JwtTokenUtil jwtTokenUtil;
 
 	@GetMapping("/home")
 	public String home() {
@@ -42,7 +42,7 @@ public class TransporterController {
 	@PostMapping("/transporter")
 	public ResponseEntity<Object> addTransporter(@Valid @RequestBody  PostTransporter transporter) {
 		log.info("Post Controller Started");
-		final String token = jwtTokenUtil.generateToken(transporter);
+		//final String token = jwtTokenUtil.generateToken(transporter);
 		return new ResponseEntity<>(service.addTransporter(transporter),HttpStatus.CREATED);
 	}
 
